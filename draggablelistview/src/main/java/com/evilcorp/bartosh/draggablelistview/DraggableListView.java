@@ -54,6 +54,8 @@ public class DraggableListView extends ListView {
     private final int MOVE_DURATION = 150;
     private final int LINE_THICKNESS = 15;
 
+    private boolean isMobileCellAnimated = false;
+
     public ArrayList<String> list;
 
     private int mLastEventY = -1;
@@ -245,7 +247,7 @@ public class DraggableListView extends ListView {
                 int itemNum = position - getFirstVisiblePosition();
                 View selectedView = getChildAt(itemNum);
 
-                if(handleId != NO_ID) {
+                if(handleId != NO_ID && isMobileCellAnimated == false) {
 
                     View handleView = getHandleView(selectedView);
 
@@ -436,11 +438,13 @@ public class DraggableListView extends ListView {
             hoverViewAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
+                    isMobileCellAnimated = true;
                     setEnabled(false);
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
+                    isMobileCellAnimated = false;
                     mAboveItemId = INVALID_ID;
                     mMobileItemId = INVALID_ID;
                     mBelowItemId = INVALID_ID;
